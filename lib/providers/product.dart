@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import '../models/http_exception.dart';
+import '../models/shared_data.dart';
 
 class Product with ChangeNotifier {
   final String id;
@@ -27,7 +28,7 @@ class Product with ChangeNotifier {
   // optimistic updating
   Future<void> toggleFavoriteStatus(String? token, String? userId) async {
     var url = Uri.parse(
-        'https://shop-app-8991f-default-rtdb.firebaseio.com/userFavorites/$userId/$id.json?auth=$token'); // firebase will create collection for that (products), firebase requires .json extension
+        '${Urls.userFavorites}/$userId/$id.json?auth=$token'); // firebase will create collection for that (products), firebase requires .json extension
 
     bool? oldStatus = isFavorite;
     _updateFavoriteStatus(!isFavorite);

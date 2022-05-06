@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/shared_data.dart';
 import '../providers/cart_provider.dart' show CartItem;
 
 class OrderItem {
@@ -56,16 +57,10 @@ class Orders with ChangeNotifier {
     return [..._orders];
   }
 
-
-  Orders(
-    this._orders, {
-    this.authToken,
-    this.userId
-  });
+  Orders(this._orders, {this.authToken, this.userId});
 
   Future<void> fetchAndStoreOrders() async {
-    var url = Uri.parse(
-        'https://shop-app-8991f-default-rtdb.firebaseio.com/orders/$userId.json?auth=$authToken');
+    var url = Uri.parse('${Urls.orders}/$userId.json?auth=$authToken');
 
     final response = await http.get(url);
     final List<OrderItem> loadedOrders = [];
@@ -85,7 +80,7 @@ class Orders with ChangeNotifier {
 
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     var url = Uri.parse(
-        'https://shop-app-8991f-default-rtdb.firebaseio.com/orders/$userId.json?auth=$authToken'); // firebase will create collection for that (products), firebase requires .json extension
+        '${Urls.orders}/$userId.json?auth=$authToken'); // firebase will create collection for that (products), firebase requires .json extension
 
     var item = OrderItem(
         id: DateTime.now().toString(),
